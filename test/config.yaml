@@ -1,0 +1,17 @@
+domains:
+  brightness:
+    stat_cmd: |
+      light
+    verbs:
+      up:
+        cmd: light -A 15
+      down:
+        cmd: light -U 15
+  volume:
+    stat_cmd: |
+      wpctl get-volume @DEFAULT_AUDIO_SINK@ | sed 's/Volume: \(.*\)/(100 * \1) \/ 1/g' | bc
+    verbs:
+      up:
+        cmd: wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+      down:
+        cmd: wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-    

@@ -1,0 +1,38 @@
+# This is an example PKGBUILD file. Use this as a start to creating your own,
+# and remove these comments. For more information, see 'man PKGBUILD'.
+# NOTE: Please fill out the license field for your package! If it is unknown,
+# then please put 'unknown'.
+
+# Maintainer: Your Name <youremail@domain.com>
+pkgname=osdman
+pkgver=0.0.1
+pkgrel=1
+pkgdesc="run OSDs for non traditional wayland desktop setups using wob"
+arch=(any)
+url="https://github.com/aki237/osdman"
+license=('GPL')
+depends=(wob)
+makedepends=(go)
+provides=(osdman)
+source=("https://github.com/aki237/osdman/archive/refs/tags/v${pkgver}.tar.gz")
+sha256sums=()
+
+build() {
+	cd "$srcdir/$pkgname-$pkgver"
+	go build -ldflags '-w -s' -o osdman ./cmd/
+}
+
+package() {
+	cd "$srcdir/$pkgname-$pkgver"
+	mkdir -p $pkgdir/usr/bin/
+	mkdir -p $pkgdir/etc/osdman/
+	mkdir -p $pkgdir/usr/lib/systemd/user/
+	mkdir -p $pkgdir/usr/share/fish/completions/
+	mkdir -p $pkgdir/usr/share/bash-completion/completions/
+
+	cp osdman $pkgdir/usr/bin/
+	cp dist/systemd/osdman.service $pkgdir/usr/lib/systemd/user/
+	cp test/config.yaml $pkgdir/etc/osdman/config.sample.yaml
+	./osdman completion fish > $pkgdir/usr/share/fish/completions/osdman.fish
+	./osdman completion bash > $pkgdir/usr/share/bash-completion/completions/osdman
+}

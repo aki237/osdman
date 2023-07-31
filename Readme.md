@@ -1,0 +1,1 @@
+# osdman - OSD manager for non traditional wayland desktop setups using wob

@@ -1,0 +1,8 @@
+[Unit]
+Description=OSD commander for non traditional wayland desktop setups using wob
+
+[Service]
+ExecStart=/usr/bin/osdman daemon
+
+[Install]
+WantedBy=multi-user.target
